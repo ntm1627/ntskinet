@@ -11,6 +11,8 @@ namespace Core.Interfaces
          Task<IReadOnlyList<T>> ListAllAsync();
          Task<T> GetEntityWithSpec(ISpecification<T> spec);
          Task<IReadOnlyList<T>> ListAsync(ISpecification<T> spec);
+
+         Task<int> CountAsync(ISpecification<T> spec);  //this is to hold the count of the products to be used for pagination
          
     }
 }

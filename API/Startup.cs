@@ -29,8 +29,15 @@ namespace API
             services.AddDbContext<StoreContext>(x =>
              x.UseSqlite(_config.GetConnectionString("DefaultConnection")));
 
-            services.AddApplicationServices();   //a custome method
+            services.AddApplicationServices();   //a custom method
             services.AddSwaggerDocumentation() ; //needs for the method in the extension
+            services.AddCors(Option =>          //we are adding this to solve the CORS problem
+            {
+                Option.AddPolicy("CorsPolicy",policy =>
+                {
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+                });
+            });
 
         }
 
@@ -48,6 +55,7 @@ namespace API
             app.UseRouting();
             app.UseStaticFiles(); //the order of this has to be just after UseRouting, this serve images and other static files
 
+            app.UseCors("CorsPolicy");  //the origin of the header will appear in postman (Access-Control-Allow-Origin)
             app.UseAuthorization();
 
             app.UseSwaggerDocumentation();
