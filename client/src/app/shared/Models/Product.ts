@@ -1,4 +1,4 @@
-//export is just like making it public
+// export is just like making it public
 export interface IProduct {
   id: number;
   name: string;
