@@ -12,3 +12,20 @@
   right: 32px;
 
 }
+// this is the advantage of scss inside a property you can defined another property
+a {
+  text-decoration:none;
+  color:#343a40;
+
+  &.active {
+      color: orange;
+  }
+}
+
+.logo {
+  cursor: pointer;
+
+  &:focus{
+    outline: none;
+  }
+}

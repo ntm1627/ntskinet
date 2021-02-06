@@ -5,6 +5,7 @@ import { IPagination } from '../shared/Models/Pagination';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {map} from 'rxjs/operators';
+import { IProduct } from '../shared/Models/Product';
 
 
 
@@ -16,10 +17,12 @@ export class ShopService {
 
   constructor(private http: HttpClient){}
 
+//  HttpParams values are array of values. When you set the value, it will override all the values in the array.
+//  When you append the value, it will push new values on the existing array.
 
     getProducts(shopParams: shopParams)
   {
-        let params=new HttpParams (); //let when we to reassign but not in the case of const
+        let params=new HttpParams ();
 
         if(shopParams.brandId!==0){
           params=params.append('brandId',shopParams.brandId.toString());
@@ -38,14 +41,17 @@ export class ShopService {
           params=params.append('pageIndex',shopParams.pageSize.toString());
 
         return this.http.get<IPagination>(this.baseUrl + 'products',{observe:'response',params})
-        .pipe(                //pipe is a rapper and inside we have chained rjxs  operator e.g instead of map delay(1000) could be done
+        .pipe(                //pipe is a rapper and inside we have chained rxjs  operator e.g instead of map delay(1000) could be done
           map(response =>{
             return response.body;
           })
         );
    }
 
-
+   getProduct(id: number){
+    //  get<IProduct> is the return type
+     return this.http.get<IProduct>(this.baseUrl + 'products/' + id);
+   }
    getBrands(){
      return this.http.get<IBrand[]>(this.baseUrl + 'products/brands');
    }
