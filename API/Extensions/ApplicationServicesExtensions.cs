@@ -12,6 +12,7 @@ namespace API.Extensions
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IBasketRepository,BasketRepository>(); 
             services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRepository<>))); //since we are using the generic class interface it is different from the norma
             services.Configure<ApiBehaviorOptions>(options =>
             {
