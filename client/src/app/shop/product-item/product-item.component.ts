@@ -1,3 +1,4 @@
+import { BasketService } from './../../basket/basket.service';
 import { IProduct } from './../../shared/Models/Product';
 import { Component, Input, OnInit } from '@angular/core';
 
@@ -9,9 +10,12 @@ import { Component, Input, OnInit } from '@angular/core';
 export class ProductItemComponent implements OnInit {
   @Input() product: IProduct  // since product-item is a child class it has to import products from the parent shop.component
 
-  constructor() { }
+  constructor(private basketService: BasketService) { }
 
   ngOnInit(): void {
   }
 
+  addItemToBasket(){
+    this.basketService.addItemToBasket(this.product)
+  }
 }
