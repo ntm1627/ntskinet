@@ -4,6 +4,7 @@ using API.Helpers;
 using API.Middleware;
 using AutoMapper;
 using Infrastructure.Data;
+using Infrastructure.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -30,12 +31,16 @@ namespace API
             services.AddDbContext<StoreContext>(x =>
              x.UseSqlite(_config.GetConnectionString("DefaultConnection")));
 
+             services.AddDbContext<AppIdentityDbContext> (x =>
+             x.UseSqlite(_config.GetConnectionString("IdentityConnection"))); //separate DB for Identity
+
              services.AddSingleton<IConnectionMultiplexer>(c =>{
                     var configuration = ConfigurationOptions.Parse(_config.GetConnectionString("Redis"),true);
                      return ConnectionMultiplexer.Connect(configuration);
                   });
 ;
             services.AddApplicationServices();   //a custom method
+            services.AddIdentityServices(_config);     //a custom method
             services.AddSwaggerDocumentation() ; //needs for the method in the extension
             services.AddCors(Option =>          //we are adding this to solve the CORS problem
             {
@@ -62,6 +67,8 @@ namespace API
             app.UseStaticFiles(); //the order of this has to be just after UseRouting, this serve images and other static files
 
             app.UseCors("CorsPolicy");  //the origin of the header will appear in postman (Access-Control-Allow-Origin)
+
+            app.UseAuthentication(); // this needs to come before useAuthorization 
             app.UseAuthorization();
 
             app.UseSwaggerDocumentation();
