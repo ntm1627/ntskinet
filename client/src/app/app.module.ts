@@ -13,6 +13,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { LoadingInterceptor } from './core/Interceptors/loading.interceptors';
 
 
+
 @NgModule({
   declarations: [
     AppComponent
