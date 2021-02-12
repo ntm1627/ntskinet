@@ -16,7 +16,7 @@ namespace API.Errors
         
         private string GetDefaultMessageForStatusCode(int statusCode)
         {
-            return statusCode switch  //it is a new swich in C# v8 without case
+            return statusCode switch  //it is a new switch in C# v8 without case
             {
                 400 =>"A bad request, you have made",
                 401 =>"Authorized, you are not",

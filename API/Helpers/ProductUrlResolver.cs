@@ -5,7 +5,8 @@ using Microsoft.Extensions.Configuration;
 
 namespace API.Helpers
 {
-    //This class is to provide the complete image url path to  the client
+    //This classess  are to help automapper to include the complete url for the pictures, by default he automapper doesn't include the 
+    //https://localhost:5001 during mapping
     public class ProductUrlResolver : IValueResolver<Product, ProductToReturnDto, string>
     {
         private readonly IConfiguration _config;

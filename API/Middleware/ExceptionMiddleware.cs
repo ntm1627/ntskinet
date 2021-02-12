@@ -40,7 +40,7 @@ namespace API.Middleware
 
                 var options=new JsonSerializerOptions
                 {
-                    PropertyNamingPolicy=JsonNamingPolicy.CamelCase   //By defautl json return Pascal and that shoud be changed to Camelcase 
+                    PropertyNamingPolicy=JsonNamingPolicy.CamelCase   //By default json return Pascal and that should be changed to Camelcase 
                 };
                 var json=JsonSerializer.Serialize(response,options);
 
