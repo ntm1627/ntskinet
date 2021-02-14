@@ -5,6 +5,7 @@ import { environment } from './../../environments/environment';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, pipe } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { IDeliveryMethod } from '../shared/Models/deliveryMethod';
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +20,14 @@ private basketSource= new BehaviorSubject<IBasket>(null);
 basket$= this.basketSource.asObservable(); //to make  the behaviorSubject public
 private basketTotalSource= new BehaviorSubject<IBasketTotals>(null);
 basketTotal$=this.basketTotalSource.asObservable();
+shipping=0;
 
   constructor(private http: HttpClient) { }
+
+  setShippingPrice(deliveryMethods: IDeliveryMethod){
+    this.shipping=deliveryMethods.price;
+    this.calculateTotals();
+  }
 
   getBasket(id: string){
     return  this.http.get(this.baseUrl + 'basket?id=' + id)
@@ -84,6 +91,14 @@ basketTotal$=this.basketTotalSource.asObservable();
     }
   }
 
+  //delete basket from the local storage once the use is done
+  deleteLocalBasket(id: string){
+    this.basketSource.next(null);
+    this.basketTotalSource.next(null);
+    localStorage.removeItem('basket_id');
+  }
+
+  //this will delete from the API
   deleteBasket(basket: IBasket) {
     return this.http.delete(this.baseUrl + 'basket?id=' + basket.id).subscribe(() => {
       this.basketSource.next(null);
@@ -96,9 +111,9 @@ basketTotal$=this.basketTotalSource.asObservable();
 
   private calculateTotals(){
     const basket= this.getCurrentBasketValue();
-    const shipping=0;
+    const shipping=this.shipping;
     const subtotal=basket.items.reduce((a,b) => (b.price * b.quantity) + a, 0); //b is item and a is the number initialized with o
-   // const total=subtotal + shipping;
+   // const total=subtotal + shipping; this is by the Instructor
     const tax=subtotal * .08;
     const total=subtotal + shipping + tax;  //added by another person
     this.basketTotalSource.next({shipping,total,tax,subtotal});
@@ -118,7 +133,7 @@ basketTotal$=this.basketTotalSource.asObservable();
 
   private createBasket(): IBasket {
     const basket= new Basket();
-    localStorage.setItem('basket_id',basket.id)  //storing the id that we found from the api in the localstoraage/browser
+    localStorage.setItem('basket_id',basket.id)  //storing the id that we found from the api in the localstorage/browser
     return basket;
   }
  private mapProductItemToBasketItem(item: IProduct, quantity: number): IBasketItem {

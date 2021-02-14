@@ -1,3 +1,4 @@
+import { JwtInterceptor } from './core/Interceptors/JwtInterceptor';
 import { ErrorInterceptor } from './core/Interceptors/error.interceptor';
 import { HomeModule } from './home/home.module';
 import { ShopModule } from './shop/shop.module';
@@ -29,7 +30,8 @@ import { LoadingInterceptor } from './core/Interceptors/loading.interceptors';
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi:true},
-    {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi:true}
+    {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi:true},
+    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi:true}
   ],
   bootstrap: [AppComponent]  // component is bootstrapped  by the root
 })

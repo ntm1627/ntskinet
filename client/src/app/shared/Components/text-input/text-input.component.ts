@@ -6,6 +6,8 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
   templateUrl: './text-input.component.html',
   styleUrls: ['./text-input.component.scss']
 })
+
+//This class works all the validation required in a text-input
 export class TextInputComponent implements OnInit, ControlValueAccessor {
   @ViewChild('input', { static: true }) input: ElementRef;
   @Input() type = 'text';

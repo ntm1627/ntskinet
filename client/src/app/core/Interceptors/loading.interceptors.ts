@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { delay, finalize } from 'rxjs/operators';
 
+//Interceptors provide a mechanism to intercept and/or mutate outgoing requests or incoming responses
 @Injectable()
 export class LoadingInterceptor implements HttpInterceptor{
 

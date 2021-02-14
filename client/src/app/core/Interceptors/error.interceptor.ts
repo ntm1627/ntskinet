@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 
 //Interceptors allow us to intercept incoming or outgoing HTTP requests using the HttpClient .
 //By intercepting the HTTP request, we can modify or change the value of the request
+
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 

@@ -16,7 +16,7 @@
   }
 
   export class Basket implements IBasket{
-    id= uuidv4();
+    id= uuidv4();  //Version 4 UUID is a universally unique identifier that is generated using random numbers
     items: IBasketItem[]=[];
 
   }

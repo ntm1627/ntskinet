@@ -11,9 +11,10 @@ import { switchMap, map } from 'rxjs/operators';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-  registerForm: FormGroup;
+  registerForm: FormGroup;  //A FormGroup aggregates the values of each child FormControl into one object,
   errors: string[];
-
+  //FormBuilder provides syntactic sugar that shortens creating instances of a FormControl , FormGroup , or FormArray .
+  //It reduces the amount of boilerplate needed to build complex forms.
   constructor(private fb: FormBuilder, private accountService: AccountService, private router: Router) { }
 
   ngOnInit() {

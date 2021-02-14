@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20210211030904_OrderEntity")]
+    [Migration("20210212222612_OrderEntity")]
     partial class OrderEntity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,7 +27,7 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("DeliveryTime")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Destination")
+                    b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
                     b.Property<double>("Price")
@@ -53,8 +53,8 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int?>("DeliveryMethodId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTimeOffset>("OrderDate")
-                        .HasColumnType("TEXT");
+                    b.Property<long>("OrderDate")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("PaymentIntentId")
                         .HasColumnType("TEXT");
