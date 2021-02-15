@@ -1,3 +1,4 @@
+import { OrdersModule } from './orders/orders.module';
 import { AuthGuard } from './core/guards/auth.guard';
 import { TestErrorComponent } from './core/test-error/test-error.component';
 import { HomeComponent } from './home/home.component';
@@ -42,6 +43,13 @@ const routes: Routes = [
     loadChildren: () =>
       import('./checkout/checkout.module').then((mod) => mod.CheckoutModule),
     data: { breadcrumb: 'Checkout' },
+  }, //this is for lazy loading
+  {
+    path: 'orders',
+    canActivate: [AuthGuard],    // This will protect an authorized access to the orders page
+    loadChildren: () =>
+      import('./orders/orders.module').then((mod) => mod.OrdersModule),
+    data: { breadcrumb: 'Orders' },
   }, //this is for lazy loading
 
   {
