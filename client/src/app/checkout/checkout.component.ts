@@ -1,6 +1,9 @@
 import { AccountService } from 'src/app/account/account.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+import { BasketService } from '../basket/basket.service';
+import { Observable } from 'rxjs';
+import { IBasketTotals } from '../shared/models/basket';
 
 @Component({
   selector: 'app-checkout',
@@ -10,12 +13,14 @@ import { Component, OnInit } from '@angular/core';
 export class CheckoutComponent implements OnInit {
 
   checkoutForm: FormGroup; //The FormGroup is a collection of Form controls It Tracks the value and validity state of a group of Form control instances
+  basketTotals$: Observable<IBasketTotals>;
 
-  constructor(private fb: FormBuilder, private accountService: AccountService) {}
+  constructor(private fb: FormBuilder, private accountService: AccountService , private basketService: BasketService) {}
 
   ngOnInit(): void {
     this.createCheckoutForm();  //forms needs to be called in the constructor before use
     this.getAddressFormValues();
+    this.basketTotals$ = this.basketService.basketTotal$;
   }
 
   //this method validate creates 3 separate forms
