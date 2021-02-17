@@ -23,6 +23,7 @@ export interface IOrder {
   shippingPrice: number;
   orderItems: IOrderItem[];
   subtotal: number;
+  // tax:number;
   total: number;
   status: string;
 }

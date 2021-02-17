@@ -9,13 +9,15 @@ namespace Core.Entities.OrderAggregate
         {
         }
 
-        public Order(IReadOnlyList<OrderItem> orderItems,string buyerEmail, Address shipToAddress, DeliveryMethod deliveryMethod, decimal subtotal)
+        public Order(IReadOnlyList<OrderItem> orderItems,string buyerEmail, Address shipToAddress, DeliveryMethod deliveryMethod, 
+        decimal subtotal, string paymentIntentId)
         {
             BuyerEmail = buyerEmail;
             ShipToAddress = shipToAddress;
             DeliveryMethod = deliveryMethod;
             OrderItems = orderItems;
             Subtotal = subtotal;
+            PaymentIntentId = paymentIntentId;
         }
 
         public string BuyerEmail { get; set; }
@@ -24,11 +26,12 @@ namespace Core.Entities.OrderAggregate
         public DeliveryMethod DeliveryMethod { get; set; }     //DeliveryMethod is a related property and needs to be included for eger loading
         public IReadOnlyList<OrderItem> OrderItems { get; set; }  //A single order may have many order items,1-m, a related property, needs to be included
         public decimal Subtotal { get; set; }
+        // public decimal tax { get; set; }
         public OrderStatus Status { get; set; } = OrderStatus.Pending;
         public string PaymentIntentId { get; set; }
         public decimal GetTotal ()    //automapper automaticall provide this to any get calls that request for total
         {
-            return Subtotal + DeliveryMethod.Price;
+            return Subtotal + DeliveryMethod.Price ;
 
         }
         

@@ -24,17 +24,32 @@ shipping=0;
 
   constructor(private http: HttpClient) { }
 
-  setShippingPrice(deliveryMethods: IDeliveryMethod){
-    this.shipping=deliveryMethods.price;
-    this.calculateTotals();
+  createPaymentIntent(){
+    return this.http.post(this.baseUrl + 'payments/' + this.getCurrentBasketValue().id, {}) //since it is a post we need to pass an empty object
+        .pipe(
+          map((basket: IBasket) =>{
+          this.basketSource.next(basket);
+          })
+        );
   }
 
+  setShippingPrice(deliveryMethod: IDeliveryMethod){
+    this.shipping=deliveryMethod.price;
+    const basket=this.getCurrentBasketValue();
+    basket.deliveryMethodId=deliveryMethod.id
+    basket.shippingPrice=deliveryMethod.price;
+    this.calculateTotals();
+    this.setBasket(basket);
+  }
+
+  //Gets the basket from the server
   getBasket(id: string){
     return  this.http.get(this.baseUrl + 'basket?id=' + id)
       .pipe(
         map((basket:IBasket)=>
         {
-          this.basketSource.next(basket);
+          this.basketSource.next(basket);   //initializing the basket
+          this.shipping=basket.shippingPrice;
           this.calculateTotals();
         })
       );
@@ -113,10 +128,10 @@ shipping=0;
     const basket= this.getCurrentBasketValue();
     const shipping=this.shipping;
     const subtotal=basket.items.reduce((a,b) => (b.price * b.quantity) + a, 0); //b is item and a is the number initialized with o
-   // const total=subtotal + shipping; this is by the Instructor
-    const tax=subtotal * .08;
-    const total=subtotal + shipping + tax;  //added by another person
-    this.basketTotalSource.next({shipping,total,tax,subtotal});
+    const total=subtotal + shipping; //this is by the Instructor
+   // const tax=(subtotal +shipping) * .08;
+   // const total=subtotal + shipping + tax;  //added by me
+    this.basketTotalSource.next({shipping, total, subtotal});
 
   }
   private addOrUpdateItem(items: IBasketItem[], itemToAdd: IBasketItem, quantity: number): IBasketItem[] {

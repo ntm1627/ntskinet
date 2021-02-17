@@ -17,5 +17,6 @@ namespace API.Dtos
         public decimal Subtotal { get; set; }
         public decimal Total { get; set; }  //automapper automatically fetch this from GetTotal of orders
         public string Status { get; set; }  //we return the id than the id
+      //  public decimal tax { get; set; }
     }
 }

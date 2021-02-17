@@ -1,3 +1,4 @@
+import { IAddress } from './../../shared/Models/address';
 import { ToastrService } from 'ngx-toastr';
 import { AccountService } from 'src/app/account/account.service';
 import { FormGroup } from '@angular/forms';
@@ -18,8 +19,9 @@ export class CheckoutAddressComponent implements OnInit {
   }
 
   saveUserAddress(){
-    this.accountService.updateAddress(this.checkoutForm.get('addressForm').value).subscribe(() =>{
+    this.accountService.updateAddress(this.checkoutForm.get('addressForm').value).subscribe((address: IAddress) =>{
       this.toaster.success('Address Saved');
+      this.checkoutForm.get('addressForm').reset(address);  //this makes the button get disabled after we set a value in address
     }, error =>{
       this.toaster.error(error.message);
       console.log(error);
