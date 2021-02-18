@@ -1,3 +1,4 @@
+using System.IO;
 using API.Extensions;
 using API.Extensions.SwaggerServiceExtensions;
 using API.Helpers;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using StackExchange.Redis;
 
 namespace API
@@ -65,6 +67,12 @@ namespace API
 
             app.UseRouting();
             app.UseStaticFiles(); //the order of this has to be just after UseRouting, this serve images and other static files
+            app.UseStaticFiles(new StaticFileOptions   //this is due to the fact that we have taken images from wwwroot to API/Content
+            {
+                FileProvider = new  PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), "Content")
+                ), RequestPath = "/content"
+            });
 
             app.UseCors("CorsPolicy");  //the origin of the header will appear in postman (Access-Control-Allow-Origin)
 
@@ -76,6 +84,9 @@ namespace API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                //This addition end point if for angular
+                endpoints.MapFallbackToController("Index", "Fallback");
+
             });
         }
     }

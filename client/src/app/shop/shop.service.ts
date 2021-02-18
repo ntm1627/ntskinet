@@ -1,3 +1,4 @@
+import { environment } from 'src/environments/environment';
 import { Pagination } from './../shared/Models/Pagination';
 import { ShopParams } from './../shared/Models/shopParams';
 import { IType } from './../shared/Models/ProductType';
@@ -13,6 +14,7 @@ import { of } from 'rxjs';
   providedIn: 'root', // means it  is provided in the app.module in the providers []
 })
 export class ShopService {
+  // baseUrl = environment.apiUrl;
   baseUrl = 'https://localhost:5001/api/';
 
   products: IProduct[] = []; //this is created to cache products in the client side for performance
