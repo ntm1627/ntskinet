@@ -12,7 +12,8 @@ namespace API.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-            services.AddScoped<ITokenService, TokenService>();
+            services.AddSingleton<IResponseCacheService,ResponseCacheService>(); //we want this to be available immediately when the application start to be there for all the requests
+            services.AddScoped<ITokenService, TokenService>();//all scoped are we want them available for that particular request and response
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IPaymentService,PaymentService>();
             services.AddScoped<IUnitOfWork,UnitOfWork>();

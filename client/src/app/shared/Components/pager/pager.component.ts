@@ -1,4 +1,3 @@
-import { shopParams } from './../../Models/shopParams';
 import { Component, OnInit,Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
@@ -12,6 +11,7 @@ export class PagerComponent implements OnInit {
 
 @Input() totalCount: number;
 @Input() pageSize:number;
+@Input() pageNumber: number;  //this is used to remember the page where we are originated and return back
 @Output() pageChanged=new EventEmitter<number>()  // in output we need to use EventEmitter
   constructor() { }
 

@@ -1,5 +1,5 @@
 // possible to use interface but it is made a class to initialize new instances
-export class shopParams{
+export class ShopParams{
   brandId = 0;  //this is to make the all option selected in the side menu
   typeId = 0; //this is to make the all option selected in the side menu
   sort='name';

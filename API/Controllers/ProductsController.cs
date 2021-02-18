@@ -34,10 +34,10 @@ namespace API.Controllers
             _productBrandRepo = productBrandRepo;
             _productsRepo = productsRepo;
         }
-
+        [Cached(600)]
         [HttpGet]
         public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetProducts(
-           [FromQuery]ProductSpecParams productParams) //we defined a class to hold all the parameters 
+           [FromQuery]ProductSpecParams productParams) //we defined a class to hold all the parameters, here the product is coming in the form of query string
         {
             var spec = new ProductsWithTypesAndBrandsSpecification(productParams);
             var countSpec =new ProductWithFiltersForCountSpecification(productParams);
@@ -49,6 +49,7 @@ namespace API.Controllers
             return Ok(new  Pagination<ProductToReturnDto>(productParams.PageIndex,productParams.PageSize,totalItems,data));
         }
 
+        [Cached(600)]
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]  //to make a proper error response from the swagger
         [ProducesResponseType(typeof(ApiResponse),StatusCodes.Status404NotFound)]
@@ -59,13 +60,15 @@ namespace API.Controllers
             if(product==null) return NotFound(new ApiResponse(404));
             return _mapper.Map<Product, ProductToReturnDto>(product);
         }
-
+        
+        [Cached(600)]
         [HttpGet("brands")]
         public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetProductBrands()
         {
             return Ok(await _productBrandRepo.ListAllAsync());
         }
 
+        [Cached(600)]
         [HttpGet("types")]
         public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProductTypes()
         {
