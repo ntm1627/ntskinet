@@ -6,6 +6,7 @@ using Core.Interfaces;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Stripe;
 using Order = Core.Entities.OrderAggregate.Order;
@@ -17,13 +18,14 @@ namespace API.Controllers
         private readonly IPaymentService _paymentService;
 
        //The webhook helps  to track the payment status, pending, failed, succeeded
-        private const string WebhookSecret = "whsec_EyP6oX8cWkG8pdnUHrzSOWnkoAWRwbco" ; //this is to receive a status from our stripe webhook event and this has to be replaced by yours
+        private readonly string _WebhookSecret; //this is to receive a status from our stripe webhook event and this has to be replaced by yours
          private readonly ILogger<IPaymentService> _logger;
 
-        public PaymentsController(IPaymentService paymentService, ILogger<IPaymentService> logger)
+        public PaymentsController(IPaymentService paymentService, ILogger<IPaymentService> logger,IConfiguration config)
         {
             _paymentService = paymentService; 
             _logger = logger;
+            _WebhookSecret=config.GetSection("StripeSettings:WebhookSecret").Value;
             
         }
 
@@ -44,7 +46,7 @@ namespace API.Controllers
         {
             var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
 
-            var stripeEvent = EventUtility.ConstructEvent(json, Request.Headers["Stripe-Signature"], WebhookSecret);
+            var stripeEvent = EventUtility.ConstructEvent(json, Request.Headers["Stripe-Signature"], _WebhookSecret);
 
             PaymentIntent intent;
             Order order;        //This order is our order not strip and an alias is there at the top
