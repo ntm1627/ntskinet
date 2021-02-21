@@ -17,6 +17,7 @@ export class CheckoutComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private accountService: AccountService , private basketService: BasketService) {}
 
+    //FormBuilder needs to be injectived as it serve as a service
   ngOnInit(): void {
     this.createCheckoutForm();  //forms needs to be called in the constructor before use
     this.getAddressFormValues();
